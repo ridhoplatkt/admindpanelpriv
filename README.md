@@ -1,0 +1,2 @@
+# admindpanelpriv
+admind
