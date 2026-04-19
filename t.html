@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - CC 28 AREA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #16a34a;
+            --light-green: #22c55e;
+            --dark-green: #15803d;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --bg-white: #ffffff;
+            --bg-light: #f0fdf4;
+            --bg-glass: rgba(255, 255, 255, 0.8);
+            --text-dark: #1f2937;
+            --text-gray: #6b7280;
+            --shadow: 0 10px 40px rgba(22, 163, 74, 0.2);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            color: var(--text-dark);
+            padding: 20px;
+        }
+
+        /* Login Screen */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .login-box {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(22, 163, 74, 0.3);
+            border-radius: 30px;
+            padding: 50px 40px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--light-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .login-subtitle {
+            text-align: center;
+            color: var(--text-gray);
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        .input-label {
+            display: block;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid rgba(22, 163, 74, 0.2);
+            border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.1);
+        }
+
+        select.input-field {
+            cursor: pointer;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--light-green));
+            color: white;
+            box-shadow: 0 10px 30px rgba(22, 163, 74, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(22, 163, 74, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .error-msg {
+            background: #fee2e2;
+            color: #dc2626;
+            padding: 12px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: none;
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .error-msg.show {
+            display: block;
+        }
+
+        /* Dashboard */
+        .dashboard {
+            display: none;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .dashboard.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .admin-header {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 25px 35px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+            border: 2px solid rgba(22, 163, 74, 0.2);
+        }
+
+        .admin-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--primary);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-logout {
+            padding: 12px 30px;
+            background: var(--danger);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-logout:hover {
+            background: #dc2626;
+            transform: scale(1.05);
+        }
+
+        .btn-view {
+            padding: 12px 30px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-view:hover {
+            background: var(--dark-green);
+            transform: scale(1.05);
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 14px 28px;
+            background: var(--bg-glass);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(22, 163, 74, 0.2);
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-dark);
+        }
+
+        .tab-btn:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--primary), var(--light-green));
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 8px 20px rgba(22, 163, 74, 0.3);
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .card {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(22, 163, 74, 0.2);
+            border-radius: 20px;
+            padding: 35px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow);
+        }
+
+        .card-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Upload Area */
+        .upload-area {
+            border: 3px dashed rgba(22, 163, 74, 0.3);
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(22, 163, 74, 0.02);
+        }
+
+        .upload-area:hover {
+            border-color: var(--primary);
+            background: rgba(22, 163, 74, 0.05);
+        }
+
+        .upload-area.dragover {
+            border-color: var(--light-green);
+            background: rgba(34, 197, 94, 0.1);
+            transform: scale(1.02);
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .upload-text {
+            color: var(--text-gray);
+            font-weight: 600;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        /* Preview Grid */
+        .preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .preview-item {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            aspect-ratio: 1;
+            border: 3px solid var(--primary);
+            background: black;
+        }
+
+        .preview-item img,
+        .preview-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .preview-delete {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: var(--danger);
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .preview-delete:hover {
+            transform: scale(1.1);
+            background: #dc2626;
+        }
+
+        .preview-type {
+            position: absolute;
+            bottom: 8px;
+            left: 8px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* Text Area */
+        textarea.input-field {
+            min-height: 120px;
+            resize: vertical;
+        }        /* Member List */
+        .member-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .member-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: white;
+            border-radius: 12px;
+            border: 2px solid rgba(22, 163, 74, 0.15);
+        }
+
+        .member-name {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .btn-delete {
+            padding: 8px 20px;
+            background: var(--danger);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-delete:hover {
+            background: #dc2626;
+            transform: scale(1.05);
+        }
+
+        .add-member-form {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .add-member-form input {
+            flex: 1;
+        }
+
+        .btn-add {
+            padding: 15px 30px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-add:hover {
+            background: var(--dark-green);
+            transform: scale(1.05);
+        }
+
+        /* Text List */
+        .text-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .text-item {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .text-item-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+        }
+
+        .text-item-type {
+            background: var(--primary);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .text-item-preview {
+            color: var(--text-dark);
+            font-size: 0.9rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: white;
+            padding: 20px 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transform: translateX(400px);
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 9999;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.success {
+            border-left: 5px solid var(--primary);
+        }
+
+        .toast.error {
+            border-left: 5px solid var(--danger);
+        }
+
+        .toast-icon {
+            font-size: 1.5rem;
+        }
+
+        .toast-msg {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-gray);
+            font-style: italic;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .admin-header {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .tabs {
+                justify-content: center;
+            }
+            
+            .add-member-form {
+                flex-direction: column;
+            }
+
+            .header-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn-view, .btn-logout {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div class="login-container" id="loginScreen">
+        <div class="login-box">
+            <h1 class="login-title">ADMIN PANEL</h1>
+            <p class="login-subtitle">CC 28 AREA Management System</p>
+            
+            <div class="error-msg" id="errorMsg">Password salah! Coba lagi.</div>
+            
+            <div class="input-group">
+                <label class="input-label">Password</label>
+                <input type="password" class="input-field" id="passwordInput" placeholder="Masukkan password admin">
+            </div>
+            
+            <button class="btn btn-primary" onclick="login()">Masuk Admin Panel</button>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div class="dashboard" id="dashboard">
+        <div class="admin-header">
+            <h1 class="admin-title">🔥 Admin Panel - CC 28 AREA</h1>
+            <div class="header-actions">
+                <button class="btn-view" onclick="viewWebsite()">Lihat Website</button>
+                <button class="btn-logout" onclick="logout()">Logout</button>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('wl')">📸 Info WL</button>
+            <button class="tab-btn" onclick="switchTab('member')">👥 Member</button>
+            <button class="tab-btn" onclick="switchTab('info')">📋 Info CC</button>
+        </div>
+
+        <!-- Tab: Info WL - SUPPORT UNLIMITED + 5 TIPE -->
+        <div class="tab-content active" id="tab-wl">
+            <div class="card">
+                <h2 class="card-title">📸 Tambah Konten Info WL</h2>
+
+                <div class="input-group">
+                    <label class="input-label">Tipe Konten</label>
+                    <select class="input-field" id="wlType" onchange="toggleWLInputs()">
+                        <option value="text">📝 Teks Doang</option>
+                        <option value="image">📸 Gambar Doang</option>
+                        <option value="image-text">📸+📝 Gambar + Teks</option>
+                        <option value="video">🎥 Video Doang</option>
+                        <option value="video-text">🎥+📝 Video + Teks</option>
+                    </select>
+                </div>
+
+                <div class="input-group" id="mediaInputGroup" style="display: none;">
+                    <label class="input-label">Upload File [Bisa pilih banyak sekaligus]</label>
+                    <div class="upload-area" onclick="document.getElementById('wlMediaInput').click()" ondrop="handleWLDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)">
+                        <div class="upload-icon">📤</div>
+                        <div class="upload-text">Klik atau drag file ke sini</div>
+                        <div style="font-size: 0.85rem; color: var(--text-gray); margin-top: 10px;">Support: JPG, PNG, WEBP, MP4 - UNLIMITED!</div>
+                    </div>
+                    <input type="file" id="wlMediaInput" accept="image/*,video/*" multiple onchange="handleWLMediaUpload(event)">
+                    <div id="wlMediaPreview" class="preview-grid"></div>
+                </div>
+
+                <div class="input-group" id="textInputGroup">
+                    <label class="input-label">Teks / Caption</label>
+                    <textarea class="input-field" id="wlTextInput" placeholder="Tulis info/announcement untuk WL..."></textarea>
+                </div>
+
+                <button class="btn btn-primary" onclick="addWLItem()">➕ Tambah ke Info WL</button>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">📋 List Konten WL [Total: <span id="wlCount">0</span>]</h2>
+                <div class="text-list" id="wlItemsList"></div>
+            </div>
+        </div>
+
+        <!-- Tab: Member -->
+        <div class="tab-content" id="tab-member">
+            <div class="card">
+                <h2 class="card-title">👥 Team Cowo</h2>
+                <div class="member-list" id="teamCowoList"></div>
+                <div class="add-member-form">
+                    <input type="text" class="input-field" id="teamCowoInput" placeholder="Nama member baru">
+                    <button class="btn-add" onclick="addTeamCowo()">+ Tambah</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">⭐ Inti LDS</h2>
+                <div class="member-list" id="intiLdsList"></div>
+                <div class="add-member-form">
+                    <input type="text" class="input-field" id="intiLdsInput" placeholder="Nama member baru">
+                    <button class="btn-add" onclick="addIntiLds()">+ Tambah</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Info CC -->
+        <div class="tab-content" id="tab-info">
+            <div class="card">
+                <h2 class="card-title">📋 Edit Info CC</h2>
+                
+                <div class="input-group">
+                    <label class="input-label">Berdiri dari</label>
+                    <input type="text" class="input-field" id="berdiriInput" placeholder="01-04-2024">
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Founder</label>
+                    <input type="text" class="input-field" id="founderInput" placeholder="raff">
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Own B</label>
+                    <input type="text" class="input-field" id="ownBInput" placeholder="lukzz alip">
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Own LDS</label>
+                    <input type="text" class="input-field" id="ownLdsInput" placeholder="-1">
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Pengurus War</label>
+                    <input type="text" class="input-field" id="pengurusWarInput" placeholder="razz, ridho">
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">Pengurus War LDS</label>
+                    <input type="text" class="input-field" id="pengurusWarLdsInput" placeholder="oca ciwa">
+                </div>
+
+                <button class="btn btn-primary" onclick="saveInfoCC()">💾 Simpan Info CC</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <span class="toast-icon" id="toastIcon">✅</span>
+        <span class="toast-msg" id="toastMsg">Berhasil disimpan!</span>
+    </div>
+
+    <script>
+        const ADMIN_PASSWORD = '28area';
+        const SECRET_PASSWORD = 'ia';
+        
+        // Login System - Support 2 password
+        function login() {
+            const password = document.getElementById('passwordInput').value;
+            const errorMsg = document.getElementById('errorMsg');
+            
+            if (password === ADMIN_PASSWORD || password === SECRET_PASSWORD) {
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('dashboard').classList.add('active');
+                loadAllData();
+                showToast('Login berhasil! Selamat datang admin', 'success');
+            } else {
+                errorMsg.classList.add('show');
+                document.getElementById('passwordInput').value = '';
+                setTimeout(() => errorMsg.classList.remove('show'), 3000);
+            }
+        }
+
+        document.getElementById('passwordInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') login();
+        });
+
+        function logout() {
+            if (confirm('Yakin mau logout?')) {
+                document.getElementById('dashboard').classList.remove('active');
+                document.getElementById('loginScreen').style.display = 'flex';
+                document.getElementById('passwordInput').value = '';
+            }
+        }
+
+        function viewWebsite() {
+            window.open('index.html', '_blank');
+        }
+
+        // Tab System
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById('tab-' + tabName).classList.add('active');
+        }
+
+        // Toast Notification
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const icon = document.getElementById('toastIcon');
+            const msg = document.getElementById('toastMsg');
+            
+            icon.textContent = type === 'success' ? '✅' : '❌';
+            msg.textContent = message;
+            toast.className = 'toast ' + type + ' show';
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // WL Items System - UNLIMITED UPLOAD FIXED
+        let wlItems = JSON.parse(localStorage.getItem('wlItems') || '[]');
+        let currentMediaFiles = [];
+
+        function toggleWLInputs() {
+            const type = document.getElementById('wlType').value;
+            const mediaGroup = document.getElementById('mediaInputGroup');
+            const textGroup = document.getElementById('textInputGroup');
+
+            if (type === 'text') {
+                mediaGroup.style.display = 'none';
+                textGroup.style.display = 'block';
+            } else if (type === 'image' || type === 'video') {
+                mediaGroup.style.display = 'block';
+                textGroup.style.display = 'none';
+            } else {
+                mediaGroup.style.display = 'block';
+                textGroup.style.display = 'block';
+            }
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.currentTarget.classList.add('dragover');
+        }
+
+        function handleDragLeave(e) {
+            e.currentTarget.classList.remove('dragover');
+        }
+
+        function handleWLDrop(e) {
+            e.preventDefault();
+            e.currentTarget.classList.remove('dragover');
+            const files = Array.from(e.dataTransfer.files);
+            processWLFiles(files);
+        }
+
+        function handleWLMediaUpload(e) {
+            const files = Array.from(e.target.files);
+            processWLFiles(files);
+        }
+
+        function processWLFiles(files) {
+            files.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    currentMediaFiles.push({
+                        data: e.target.result,
+                        type: file.type,
+                        name: file.name
+                    });
+                    renderMediaPreview();
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function renderMediaPreview() {
+            const container = document.getElementById('wlMediaPreview');
+            container.innerHTML = '';
+
+            currentMediaFiles.forEach((file, index) => {
+                const div = document.createElement('div');
+                div.className = 'preview-item';
+
+                if (file.type.startsWith('image/')) {
+                    div.innerHTML = `
+                        <img src="${file.data}" alt="Preview">
+                        <button class="preview-delete" onclick="removeMediaFile(${index})">×</button>
+                        <span class="preview-type">📸</span>
+                    `;
+                } else if (file.type.startsWith('video/')) {
+                    div.innerHTML = `
+                        <video src="${file.data}" muted></video>
+                        <button class="preview-delete" onclick="removeMediaFile(${index})">×</button>
+                        <span class="preview-type">🎥</span>
+                    `;
+                }
+
+                container.appendChild(div);
+            });
+        }
+
+        function removeMediaFile(index) {
+            currentMediaFiles.splice(index, 1);
+            renderMediaPreview();
+        }        function addWLItem() {
+            const type = document.getElementById('wlType').value;
+            const text = document.getElementById('wlTextInput').value.trim();
+
+            // Validasi
+            if ((type === 'text' || type === 'image-text' || type === 'video-text') && !text) {
+                showToast('Teks tidak boleh kosong!', 'error');
+                return;
+            }
+
+            if ((type !== 'text') && currentMediaFiles.length === 0) {
+                showToast('Upload file dulu!', 'error');
+                return;
+            }
+
+            // Kalo tipe text only
+            if (type === 'text') {
+                const item = {
+                    id: Date.now(),
+                    type: 'text',
+                    text: text,
+                    media: null,
+                    timestamp: Date.now()
+                };
+                wlItems.push(item);
+                showToast('Teks berhasil ditambahkan!', 'success');
+            } else {
+                // Upload multiple files
+                currentMediaFiles.forEach((file, idx) => {
+                    const mediaType = file.type.startsWith('image/') ? 'image' : 'video';
+                    let finalType = mediaType;
+                    
+                    if (type === 'image-text' || type === 'video-text') {
+                        finalType = mediaType + '-text';
+                    } else {
+                        finalType = mediaType;
+                    }
+
+                    const item = {
+                        id: Date.now() + idx,
+                        type: finalType,
+                        text: text || null,
+                        media: file.data,
+                        timestamp: Date.now() + idx
+                    };
+                    wlItems.push(item);
+                });
+                showToast(`${currentMediaFiles.length} file berhasil ditambahkan! Total: ${wlItems.length}`, 'success');
+            }
+
+            localStorage.setItem('wlItems', JSON.stringify(wlItems));
+
+            // Reset form
+            document.getElementById('wlTextInput').value = '';
+            document.getElementById('wlMediaInput').value = '';
+            currentMediaFiles = [];
+            document.getElementById('wlMediaPreview').innerHTML = '';
+
+            renderWLItems();
+        }
+
+        function renderWLItems() {
+            const container = document.getElementById('wlItemsList');
+            const countSpan = document.getElementById('wlCount');
+            
+            countSpan.textContent = wlItems.length;
+
+            if (wlItems.length === 0) {
+                container.innerHTML = '<div class="empty-state">Belum ada konten</div>';
+                return;
+            }
+
+            container.innerHTML = '';
+            wlItems.slice().reverse().forEach((item, reverseIndex) => {
+                const index = wlItems.length - 1 - reverseIndex;
+                const div = document.createElement('div');
+                div.className = 'text-item';
+
+                let typeIcon = '';
+                let typeName = '';
+                if (item.type === 'text') {
+                    typeIcon = '📝';
+                    typeName = 'Teks';
+                } else if (item.type === 'image') {
+                    typeIcon = '📸';
+                    typeName = 'Gambar';
+                } else if (item.type === 'image-text') {
+                    typeIcon = '📸+📝';
+                    typeName = 'Gambar+Teks';
+                } else if (item.type === 'video') {
+                    typeIcon = '🎥';
+                    typeName = 'Video';
+                } else if (item.type === 'video-text') {
+                    typeIcon = '🎥+📝';
+                    typeName = 'Video+Teks';
+                }
+
+                const previewText = item.text ? (item.text.length > 60 ? item.text.substring(0, 60) + '...' : item.text) : 'Media only';
+
+                div.innerHTML = `
+                    <div class="text-item-content">
+                        <span class="text-item-type">${typeIcon} ${typeName}</span>
+                        <span class="text-item-preview">${previewText}</span>
+                    </div>
+                    <button class="btn-delete" onclick="deleteWLItem(${index})">Hapus</button>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function deleteWLItem(index) {
+            if (confirm('Hapus konten ini?')) {
+                wlItems.splice(index, 1);
+                localStorage.setItem('wlItems', JSON.stringify(wlItems));
+                renderWLItems();
+                showToast('Konten berhasil dihapus! Sisa: ' + wlItems.length, 'success');
+            }
+        }
+
+        // Team Cowo System
+        let teamCowo = JSON.parse(localStorage.getItem('teamCowo') || '["rafzz","lukzz","prhan","adlii","ridho"]');
+
+        function renderTeamCowo() {
+            const container = document.getElementById('teamCowoList');
+            container.innerHTML = '';
+            
+            teamCowo.forEach((name, index) => {
+                const div = document.createElement('div');
+                div.className = 'member-item';
+                div.innerHTML = `
+                    <span class="member-name">${name}</span>
+                    <button class="btn-delete" onclick="deleteTeamCowo(${index})">Hapus</button>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function addTeamCowo() {
+            const input = document.getElementById('teamCowoInput');
+            const name = input.value.trim();
+            
+            if (!name) {
+                showToast('Nama tidak boleh kosong!', 'error');
+                return;
+            }
+            
+            teamCowo.push(name);
+            localStorage.setItem('teamCowo', JSON.stringify(teamCowo));
+            input.value = '';
+            renderTeamCowo();
+            showToast('Member berhasil ditambahkan!', 'success');
+        }
+
+        function deleteTeamCowo(index) {
+            if (confirm(`Hapus ${teamCowo[index]}?`)) {
+                teamCowo.splice(index, 1);
+                localStorage.setItem('teamCowo', JSON.stringify(teamCowo));
+                renderTeamCowo();
+                showToast('Member berhasil dihapus!', 'success');
+            }
+        }
+
+        // Inti LDS System
+        let intiLds = JSON.parse(localStorage.getItem('intiLds') || '["oca","qila"]');
+
+        function renderIntiLds() {
+            const container = document.getElementById('intiLdsList');
+            container.innerHTML = '';
+            
+            intiLds.forEach((name, index) => {
+                const div = document.createElement('div');
+                div.className = 'member-item';
+                div.innerHTML = `
+                    <span class="member-name">${name}</span>
+                    <button class="btn-delete" onclick="deleteIntiLds(${index})">Hapus</button>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function addIntiLds() {
+            const input = document.getElementById('intiLdsInput');
+            const name = input.value.trim();
+            
+            if (!name) {
+                showToast('Nama tidak boleh kosong!', 'error');
+                return;
+            }
+            
+            intiLds.push(name);
+            localStorage.setItem('intiLds', JSON.stringify(intiLds));
+            input.value = '';
+            renderIntiLds();
+            showToast('Member berhasil ditambahkan!', 'success');
+        }
+
+        function deleteIntiLds(index) {
+            if (confirm(`Hapus ${intiLds[index]}?`)) {
+                intiLds.splice(index, 1);
+                localStorage.setItem('intiLds', JSON.stringify(intiLds));
+                renderIntiLds();
+                showToast('Member berhasil dihapus!', 'success');
+            }
+        }
+
+        // Info CC System
+        let infoCC = JSON.parse(localStorage.getItem('infoCC') || '{}');
+
+        function saveInfoCC() {
+            infoCC = {
+                berdiri: document.getElementById('berdiriInput').value || '01-04-2024',
+                founder: document.getElementById('founderInput').value || 'raff',
+                ownB: document.getElementById('ownBInput').value || 'lukzz alip',
+                ownLds: document.getElementById('ownLdsInput').value || '-1',
+                pengurusWar: document.getElementById('pengurusWarInput').value || 'razz, ridho',
+                pengurusWarLds: document.getElementById('pengurusWarLdsInput').value || 'oca ciwa'
+            };
+            
+            localStorage.setItem('infoCC', JSON.stringify(infoCC));
+            showToast('Info CC berhasil disimpan!', 'success');
+        }
+
+        function loadInfoCC() {
+            document.getElementById('berdiriInput').value = infoCC.berdiri || '01-04-2024';
+            document.getElementById('founderInput').value = infoCC.founder || 'raff';
+            document.getElementById('ownBInput').value = infoCC.ownB || 'lukzz alip';
+            document.getElementById('ownLdsInput').value = infoCC.ownLds || '-1';
+            document.getElementById('pengurusWarInput').value = infoCC.pengurusWar || 'razz, ridho';
+            document.getElementById('pengurusWarLdsInput').value = infoCC.pengurusWarLds || 'oca ciwa';
+        }
+
+        // Load All Data
+        function loadAllData() {
+            toggleWLInputs();
+            renderWLItems();
+            renderTeamCowo();
+            renderIntiLds();
+            loadInfoCC();
+        }
+
+        // Enter key untuk tambah member
+        document.getElementById('teamCowoInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') addTeamCowo();
+        });
+
+        document.getElementById('intiLdsInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') addIntiLds();
+        });
+
+        // Init
+        console.log('%c🔥 ADMIN PANEL CC 28 AREA 🔥', 'color: #16a34a; font-size: 20px; font-weight: bold;');
+        console.log('%cPassword: 28area atau ia', 'color: #6b7280; font-size: 12px;');
+    </script>
+</body>
+</html>
